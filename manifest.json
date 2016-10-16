@@ -16,8 +16,11 @@
     "scripts" : ["background.js"],
     "persistent" : false
   },
+  "icons": { "16": "Distill_Logo16.png",
+    "48": "Distilled_logo64.png",
+    "128": "Distill_Logo128.png" },
   "browser_action": {
-    "default_icon": "icon.png"
+    "default_icon": "Distilled_logo64.png"
   },
   "options_ui": {
     "page": "options.html",
