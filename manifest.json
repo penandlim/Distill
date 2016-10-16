@@ -7,7 +7,7 @@
   [
     {
       "matches": ["*://*/*"],
-      "js": [ "clarifai.js", "aes-min.js", "script.js"],
+      "js": ["clarifai.js","aes-min.js", "swears.js", "slurs.js", "script.js"],
       "run_at": "document_start"
     }
   ],
