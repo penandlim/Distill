@@ -18,9 +18,9 @@ function blurUnscannedImages() {
             if (images[i].src != null && isImageValid) {
                 images[i].style.cssText = "filter: blur(1em);";
                 images[i].setAttribute("_SafeSpace_blurred", true);
-                if (unscanned_images.length < 60 && !unscanned_images.includes(images[i])) {
+                if (unscanned_images.length < 127 && !unscanned_images.includes(images[i])) {
                     unscanned_images.push(images[i]);
-                } else if (unscanned_images.length > 59) {
+                } else if (unscanned_images.length > 126) {
                     var new_array = unscanned_images.slice();
                     searchCategories(new_array);
                     unscanned_images = [];
@@ -33,7 +33,7 @@ function blurUnscannedImages() {
 function searchCategories(arr) {
     chrome.storage.sync.get({"nsfw" : true, "custom_list" : ["Shark", "Spider"]}, function (obj) {
         if (obj.nsfw) {
-            setTimeout(predictNSFW.bind(null, arr), howManySearches * 300);
+            setTimeout(predictNSFW.bind(null, arr), howManySearches * 100);
             howManySearches++;
         }
 //        if (obj.custom_list.length > 0) {
@@ -127,7 +127,7 @@ function predictNSFW(images_to_remove) {
             var filetype = url.split(".");
             filetype = filetype[filetype.length - 1];
             if (filetype.substring(0,3) == "jpg" || filetype.substring(0,4) == "jpeg" || filetype.substring(0,3) == "png") {
-                console.log("Using Real Image...");
+                //console.log("Using Real Image...");
             } else {
                 url = images_to_remove[i].src;
             }
@@ -143,7 +143,7 @@ function predictNSFW(images_to_remove) {
     // Send image_urls and check for NSFW status.
     app.models.predict(Clarifai.NSFW_MODEL, image_urls).then(
         function(response) {
-            console.log(response);
+            // console.log(response);
             howManySearches--;
             var outputs = response.data.outputs;
 
@@ -231,7 +231,6 @@ function scanAfterIdle() {
         new_array = unscanned_images.slice();
         searchCategories(new_array);
         unscanned_images = [];
-        console.log();
     }
 }
 

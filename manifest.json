@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Safe Space",
+  "name": "Distill",
   "version": "1.0",
   "description": "An extension that replaces all NSFW images to blanks.",
   "content_scripts":
