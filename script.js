@@ -16,7 +16,7 @@ function blurUnscannedImages() {
                 isImageValid = true;
             }
             if (images[i].src != null && isImageValid) {
-                images[i].style.cssText = "filter: blur(1em);";
+                images[i].style.cssText = "filter: blur(10px);";
                 images[i].setAttribute("_SafeSpace_blurred", true);
                 if (unscanned_images.length < 60 && !unscanned_images.includes(images[i])) {
                     unscanned_images.push(images[i]);
@@ -150,12 +150,12 @@ function predictNSFW(images_to_remove) {
 
                 // Check for null. Needs this or else code stops on error.
                 var nsfwpercent = 0;
-                for (var j = 0; j < outputs[i].data.concepts.length; j++) {
-                    if (outputs[i].data.concepts[j].name === "nsfw") {
-                        nsfwpercent = outputs[i].data.concepts[j].value;
-                        break;
-                    }
+                var nsfwindex = 0;
+                if (outputs[i].data.concepts[0].name === "nsfw") {
+                } else {
+                    nsfwindex++;
                 }
+                nsfwpercent = outputs[i].data.concepts[nsfwindex].value;
 
                 // if its NSFW content, leave image blurred.
                 if (nsfwpercent < 0.75) {
