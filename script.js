@@ -16,12 +16,12 @@ function blurUnscannedImages() {
                 isImageValid = true;
             }
             if (images[i].src != null && isImageValid) {
-                var blur_amount = 10;
-                images[i].style.cssText = "filter: blur(" + blur_amount + "px);";
+                var blur_amount = 1;
+                images[i].style.cssText = "filter: blur(" + blur_amount + "em);";
                 images[i].setAttribute("_SafeSpace_blurred", true);
-                if (unscanned_images.length < 30 && !unscanned_images.includes(images[i])) {
+                if (unscanned_images.length < 60 && !unscanned_images.includes(images[i])) {
                     unscanned_images.push(images[i]);
-                } else if (unscanned_images.length > 29) {
+                } else if (unscanned_images.length > 59) {
                     var new_array = unscanned_images.slice();
                     if (howManySearches < 1) {
                         predictNSFW(new_array);
