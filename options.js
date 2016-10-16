@@ -51,6 +51,7 @@ function save_options() {
   var war = document.getElementById('war').checked;
   var scary = document.getElementById('scary').checked;
   var suicide = document.getElementById('suicide').checked;
+  var bans = document.getElementById('bans').value;
   chrome.storage.sync.set({
     "gore": gore,
     "bugs": bugs,
@@ -61,7 +62,8 @@ function save_options() {
     "drugs": drugs,
     "war": war,
     "scary": scary,
-    "suicide": suicide
+    "suicide": suicide,
+    "bans": bans
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -93,7 +95,7 @@ function restore_options() {
     "scary": false,
     "suicide": false,
     "firsttime": true,
-    "custom_list": ["Spider", "Shark"]
+    "bans": ""
   }, function(items) {
     document.getElementById('gore').checked = items.gore;
     document.getElementById('bugs').checked = items.bugs;
@@ -105,6 +107,7 @@ function restore_options() {
     document.getElementById('war').checked = items.war;
     document.getElementById('scary').checked = items.scary;
     document.getElementById('suicide').checked = items.suicide;
+    document.getElementById('bans').value = items.bans;
   });
 }
 

@@ -194,27 +194,24 @@ function walk(node)
 //node.innerText
 function handleText(node) 
 {
+    
     var v = node.textContent;
     var regexp;
     chrome.storage.sync.get({"swears": true, "slurs": true}, function(items){
 	if (items.swears) {
 	    for (var i = 0; i < swearwords.length; i++) {
                 regexp = new RegExp("\\b"+swearwords[i]+"\\b", "gi");
-		//if (v.search(regexp) >= 0) {
-		    
-		//}
-		//console.log(regexp);
-                v = v.replace(regexp, '<span style="color: red">regexp.substring(3,regexp.length-5)</span>');
+                v = v.replace(regexp, "----");
             }
 	}
 	if (items.slurs) {
 	    for (var i = 0; i < slurwords.length; i++) {
                 regexp = new RegExp("\\b"+slurwords[i]+"\\b", "gi");
-                v = v.replace(regexp, "YYYYYY");
+                v = v.replace(regexp, "----");
             }
 	}   
         node.textContent = v;
-    });}
+    });
 }
 
 function timeSince(_time) {
