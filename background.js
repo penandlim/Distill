@@ -1,3 +1,3 @@
 chrome.browserAction.onClicked.addListener(function(tab) {
-    // Do something
+    chrome.tabs.create({ 'url': 'chrome://extensions/?options=' + chrome.runtime.id });
 });

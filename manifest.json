@@ -7,7 +7,11 @@
   [
     {
       "matches": ["*://*/*"],
+<<<<<<< HEAD
       "js": ["clarifai.js", "swears.js", "slurs.js", "script.js"],
+=======
+      "js": [ "clarifai.js", "script.js"],
+>>>>>>> 1ae14287974f877b75af375d85dea25c2bc6a074
       "run_at": "document_start"
     }
   ],
