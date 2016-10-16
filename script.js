@@ -227,11 +227,9 @@ var unscanned_images = [];
 var howManySearches = 0;
 
 function scanAfterIdle() {
-    if (unscanned_images.length > 0) {
-        new_array = unscanned_images.slice();
-        searchCategories(new_array);
-        unscanned_images = [];
-    }
+    new_array = unscanned_images.slice();
+    searchCategories(new_array);
+    unscanned_images = [];
 }
 
 setInterval(scanAfterIdle, 200);
