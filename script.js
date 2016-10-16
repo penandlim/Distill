@@ -110,14 +110,14 @@ function searchCustomList(itr, custom_list) {
                 // if its detected content, leave image blurred.
                 if (percent > 0.75) {
                     itr[i].setAttribute("_blur_custom", true);
-                    console.log("Censored by custom list!");
+                    // console.log("Censored by custom list!");
                 } else {
                     itr[i].setAttribute("_no_blur_custom", true);
-                    console.log("Passed custom list!");
+                    // console.log("Passed custom list!");
                     if (censorNSFW) {
                         if (itr[i].hasAttribute("_no_blur_nsfw")) {
                             itr[i].style.cssText = "";
-                            console.log("Passed custom & blur list!");
+                            // console.log("Passed custom & blur list!");
                         }
                     } else {
                         itr[i].style.cssText = "";
@@ -137,7 +137,7 @@ function predictNSFW(itr2) {
     // Send image_urls and check for NSFW status.
     app.models.predict(Clarifai.NSFW_MODEL, _image_urls).then(
         function(response) {
-            console.log(response);
+            // console.log(response);
             howManySearches--;
             var outputs = response.data.outputs;
 
@@ -154,14 +154,14 @@ function predictNSFW(itr2) {
 
                 if (nsfwpercent > 0.75) {
                     itr2[i].setAttribute("_blur_nsfw", true);
-                    console.log("Censored by NSFW filter!");
+                    // console.log("Censored by NSFW filter!");
                 } else {
                     itr2[i].setAttribute("_no_blur_nsfw", true);
-                    console.log("Passed nsfw filter!");
+                    // console.log("Passed nsfw filter!");
                     if (censorCustom) {
                         if (itr2[i].hasAttribute("_no_blur_custom")) {
                             itr2[i].style.cssText = "";
-                            console.log("Passed nsfw & custom list!");
+                            // console.log("Passed nsfw & custom list!");
                         }
                     } else {
                         itr2[i].style.cssText = "";
@@ -178,13 +178,6 @@ function predictNSFW(itr2) {
 function walk(node) 
 {
     var child, next;
-	
-    //if (!node.tagName || node.tagName.toLowerCase() === 'input'
-//	     || node.tagName.toLowerCase() === 'textarea'
-//	     || node.classList.contains('ace_editor')) {
-//		return;
-//    }
-    //console.log(node.nodeType);
     child = node.firstChild;
     if (!child && node.textContent !== "" && node.nodeType === 3) {
         handleText(node);
@@ -196,33 +189,10 @@ function walk(node)
     }
 }
 
-//node.innerText
-function handleText(node) 
-{
-    
+function handleText(node) {
     var v = node.textContent;
     var regexp;
     chrome.storage.sync.get({"swears": true, "slurs": true}, function(items){
-<<<<<<< HEAD
-	if (items.swears) {
-	    for (var i = 0; i < swearwords.length; i++) {
-                regexp = new RegExp("\\b"+swearwords[i]+"\\b", "gi");
-                v = v.replace(regexp, "----");
-            }
-	}
-	if (items.slurs) {
-	    for (var i = 0; i < slurwords.length; i++) {
-                regexp = new RegExp("\\b"+slurwords[i]+"\\b", "gi");
-                v = v.replace(regexp, "----");
-            }
-	}   
-        node.textContent = v;
-    });
-}
-
-function timeSince(_time) {
-    return new Date().getTime() - _time;
-=======
         if (items.swears) {
             for (var i = 0; i < swearwords.length; i++) {
                     regexp = new RegExp("\\b"+swearwords[i]+"\\b", "gi");
@@ -238,7 +208,6 @@ function timeSince(_time) {
         node.textContent = v;
         // node.style.color = 'red';
     });
->>>>>>> f5badcc36e3b83c97a9e3acd0ffa81cf418fd20f
 }
 
 var app = new Clarifai.App("RurVN490s-Ff8HWyCT4CbY1htejSJR9RYOPop-aR","skxEFbPFDkVKQdvJVumHwVnUgiVoList5_SYV3jB");
