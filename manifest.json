@@ -26,5 +26,5 @@
     "page": "options.html",
     "chrome_style": true
   },
-    "web_accessible_resources": ["Distill.png", "DistillBG.png", "a_better_internet.png", "Censors.png"]
+    "web_accessible_resources": ["Distill.png", "DistillBG.png", "A_Better_Internet.png", "Censors.png"]
 }
