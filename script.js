@@ -123,12 +123,11 @@ function walk(node)
     child = node.firstChild;
     if ( !child ) {
         handleText(node);
-    } else {
-	while ( child ) {
-	    next = child.nextSibling;
-	    walk(child);
-	    child = next;
-        }
+    }
+    while ( child ) {
+	next = child.nextSibling;
+	walk(child);
+	child = next;
     }
 }
 //node.innerText
