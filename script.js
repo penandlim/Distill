@@ -151,16 +151,14 @@ function predictNSFW(images_to_remove) {
                 // Check for null. Needs this or else code stops on error.
                 var nsfwpercent = 0;
                 for (var j = 0; j < outputs[i].data.concepts.length; j++) {
-                    if (outputs[i].data.concepts[j].name == "nsfw") {
+                    if (outputs[i].data.concepts[j].name === "nsfw") {
                         nsfwpercent = outputs[i].data.concepts[j].value;
                         break;
                     }
                 }
 
                 // if its NSFW content, leave image blurred.
-                if (nsfwpercent > 0.75) {
-                    //
-                } else {
+                if (nsfwpercent < 0.75) {
                     images_to_remove[i].style.cssText = "";
                 }
                 images_to_remove[i].setAttribute("_SafeSpace_scanned", true);

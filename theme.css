@@ -55,17 +55,15 @@
     
     body {
         background-image: url(DistillBG.png);
-        background-size: 100vw 100vh;
+        background-size: 100% 100%;
         overflow: hidden;
         color: #232323;
         font-family: 'OCR', serif;
         font-size: 5px;
         /* size: 100vw 92vh; */
         height: 93vh;
-        width: 92vw;
+        width: auto;
     }
-    
-   
     
     .mid {
         position:relative;
