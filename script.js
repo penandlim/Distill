@@ -115,11 +115,11 @@ function walk(node)
 {
     var child, next;
 	
-    if (!node.tagName || node.tagName.toLowerCase() === 'input'
-	     || node.tagName.toLowerCase() === 'textarea'
-	     || node.classList.contains('ace_editor')) {
-		return;
-    }
+    //if (!node.tagName || node.tagName.toLowerCase() === 'input'
+//	     || node.tagName.toLowerCase() === 'textarea'
+//	     || node.classList.contains('ace_editor')) {
+//		return;
+//    }
     //console.log(node.nodeType);
     child = node.firstChild;
     if ( !child ) {
@@ -135,19 +135,19 @@ function walk(node)
 //node.innerText
 function handleText(node) 
 {
-    var v;
+    var v = node.textContent;
     var regexp;
-    console.log(node.textContent);
+    //console.log(node.textContent);
     if (chrome.storage.sync.get("swears", function(items){return items.swears;})) {
         for (var i; i < swears.length; i++) {
-            v = node.textContent;
-            regexp = new RegExp("/\b" + swears[i] + "\b/g");
-            if (v.search(regexp) >= 0) {
-            console.log("Naughty language: " + swears[i]);
+	    console.log(v);
+            //regexp = new RegExp("/" + swears[i] + "/gi");
+            if (v.search(swears[i]) >= 0) {
+                console.log("Naughty language: " + swears[i]);
             }
             v = v.replace(regexp, "XXXXXX");
-            node.textContent = v;
         }
+        node.textContent = v;
     }
     if (chrome.storage.sync.get("slurs", function(items){return items.slurs;})) {
         for (var i; i < slurs.length; i++) {
