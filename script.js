@@ -28,7 +28,6 @@ function blurUnscannedImages() {
     }
 }
 
-//Gerald testing if i can push
 function predictNSFW(images_to_remove) {
 
     // Prepare an array with URLs to pass to Clarifai.
