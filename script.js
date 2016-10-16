@@ -2,12 +2,13 @@ function blurUnscannedImages() {
     // Probe all image tags
     var images = document.getElementsByTagName("img");
 
-    // Create an array with single objects so iI can splice it later
+    // Create an array with single objects so I can splice it later
     var images_to_remove = [];
 
     // Go through images array, then put all images with right formats to images_to_remove
     for (var i = 0; i < images.length; i++) {
-        if (!images[i].hasAttribute("_scanned") && !images[i].hasAttribute("_blurred")) {
+        if (!images[i].hasAttribute("_SafeSpace_scanned") || !images[i].hasAttribute("_SafeSpace_blurred")) {
+
             isImageValid = false;
             var filetype = images[i].src.split(".");
             filetype = filetype[filetype.length - 1];
@@ -16,10 +17,10 @@ function blurUnscannedImages() {
             }
             if (images[i].src != null && isImageValid) {
                 images[i].style.cssText = "filter: blur(20px)";
-                images[i].setAttribute('_blurred', true);
-                if (unscanned_images.length < 50 && !unscanned_images.includes(images[i])) {
+                images[i].setAttribute("_SafeSpace_blurred", true);
+                if (unscanned_images.length < 127 && !unscanned_images.includes(images[i])) {
                     unscanned_images.push(images[i]);
-                } else if (unscanned_images.length > 49) {
+                } else if (unscanned_images.length > 126) {
                     predictNSFW(unscanned_images.slice());
                     unscanned_images = [];
                 }
@@ -36,20 +37,17 @@ function predictNSFW(images_to_remove) {
     // Go through images_to_remove and remove src.
     for (var i = 0; i < images_to_remove.length; i++) {
         var isImageValid = false;
-
+        var url;
         // Check if there is anchor to it.
         var parentAnchor = images_to_remove[i].closest("a");
         if (parentAnchor != null) {
-            var url = parentAnchor.getAttribute("href");
+            url = parentAnchor.getAttribute("href");
             var filetype = url.split(".");
             filetype = filetype[filetype.length - 1];
-            if (filetype.substring(0,3) == "jpg" || filetype.substring(0,4) == "jpeg" || filetype.substring(0,3) == "png") {
-
-            } else {
-                var url = images_to_remove[i].src;
-            }
+            if (filetype.substring(0,3) != "jpg" || filetype.substring(0,4) != "jpeg" || filetype.substring(0,3) != "png")
+                url = images_to_remove[i].src;
         } else {
-            var url = images_to_remove[i].src;
+            url = images_to_remove[i].src;
         }
 
         if (url.substring(0, 2) == "//") {
@@ -68,7 +66,6 @@ function predictNSFW(images_to_remove) {
             for (var i = 0; i < outputs.length; i++) {
 
                 // Check for null. Needs this or else code stops on error.
-                console.log("img src = " + outputs[i].input.data.image.url);
                 if (outputs[i].data.concepts[0].name == "nsfw") {
                     var nsfwpercent = outputs[i].data.concepts[0].value;
                 }
@@ -78,14 +75,13 @@ function predictNSFW(images_to_remove) {
 
                 // if its NSFW content, remove image.
                 if (nsfwpercent > 0.75) {
+                    console.log("img src = " + outputs[i].input.data.image.url);
+                    console.log("NSFW % = " + nsfwpercent);
                     console.log("stay blurred!");
                 } else {
                     images_to_remove[i].style.cssText = "";
                 }
-                images_to_remove[i].setAttribute('_scanned', true);
-
-                console.log("NSFW % = " + nsfwpercent);
-
+                images_to_remove[i].setAttribute("_SafeSpace_scanned", true);
             }
         },
         function(err) {
@@ -110,6 +106,7 @@ document.addEventListener("DOMNodeInserted", function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
+    blurUnscannedImages();
     setInterval(scanAfterIdle, 2000);
 });
 
