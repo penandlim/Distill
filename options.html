@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head><title>Filters</title></head>
+<head>
+    <title>Filters</title>
+</head>
 <body>
 
 Select what you would like to censor in images:<br>
 <label>
+    password: <input type="password" id="password">
+    <br>
   <input type="checkbox" id="gore">
   corpses/gore/death/blood/medical<br>
   <input type="checkbox" id="bugs">
@@ -26,10 +30,11 @@ Select what you would like to censor in images:<br>
   <input type="checkbox" id="suicide">
   suicide<br>
 </label><br>
-
 <div id="status"></div>
 <button id="save">Save</button>
 
+
+<script src="aes-min.js"></script>
 <script src="options.js"></script>
 </body>
 </html>

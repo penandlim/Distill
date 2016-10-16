@@ -16,7 +16,8 @@ function blurUnscannedImages() {
                 isImageValid = true;
             }
             if (images[i].src != null && isImageValid) {
-                images[i].style.cssText = "filter: blur(20px)";
+                var blur_amount = 10;
+                images[i].style.cssText = "filter: blur(" + blur_amount + "px);";
                 images[i].setAttribute("_SafeSpace_blurred", true);
                 if (unscanned_images.length < 30 && !unscanned_images.includes(images[i])) {
                     unscanned_images.push(images[i]);
@@ -25,7 +26,7 @@ function blurUnscannedImages() {
                     if (howManySearches < 1) {
                         predictNSFW(new_array);
                     } else {
-                        setTimeout(predictNSFW.bind(null, new_array), howManySearches * 100);
+                        setTimeout(predictNSFW.bind(null, new_array), howManySearches * 500);
                     }
                     unscanned_images = [];
                 }
@@ -86,9 +87,9 @@ function predictNSFW(images_to_remove) {
                 }
                 // if its NSFW content, leave image blurred.
                 if (nsfwpercent > 0.75) {
-                    console.log("img src = " + outputs[i].input.data.image.url);
-                    console.log("NSFW % = " + nsfwpercent);
-                    console.log("stay blurred!");
+//                    console.log("img src = " + outputs[i].input.data.image.url);
+//                    console.log("NSFW % = " + nsfwpercent);
+//                    console.log("stay blurred!");
                 } else {
                     images_to_remove[i].style.cssText = "";
                 }
@@ -104,7 +105,7 @@ function predictNSFW(images_to_remove) {
 function scanAfterIdle() {
     if (unscanned_images.length > 0) {
         new_array = unscanned_images.slice();
-        setTimeout(predictNSFW.bind(null, new_array), howManySearches * 200);
+        setTimeout(predictNSFW.bind(null, new_array), howManySearches * 500);
         unscanned_images = [];
         console.log();
     }
