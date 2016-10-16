@@ -24,14 +24,22 @@ function blurUnscannedImages() {
                 } else if (unscanned_images.length > 59) {
                     var new_array = unscanned_images.slice();
                     if (howManySearches < 1) {
-                        predictNSFW(new_array);
+                        searchCategories(new_array);
                     } else {
-                        setTimeout(predictNSFW.bind(null, new_array), howManySearches * 500);
+                        setTimeout(searchCategories.bind(null, new_array), howManySearches * 500);
                     }
                     unscanned_images = [];
                 }
             }
         }
+    }
+}
+
+function searchCategories(arr) {
+    if (howManySearches < 1) {
+        predictNSFW(new_array);
+    } else {
+        setTimeout(predictNSFW.bind(null, new_array), howManySearches * 500);
     }
 }
 
@@ -85,6 +93,7 @@ function predictNSFW(images_to_remove) {
                         break;
                     }
                 }
+
                 // if its NSFW content, leave image blurred.
                 if (nsfwpercent > 0.75) {
 //                    console.log("img src = " + outputs[i].input.data.image.url);
