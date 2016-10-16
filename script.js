@@ -199,7 +199,11 @@ function handleText(node)
 	if (items.swears) {
 	    for (var i = 0; i < swearwords.length; i++) {
                 regexp = new RegExp("\\b"+swearwords[i]+"\\b", "gi");
-                v = v.replace(regexp, "XXXXXX");
+		//if (v.search(regexp) >= 0) {
+		    
+		//}
+		//console.log(regexp);
+                v = v.replace(regexp, '<span style="color: red">regexp.substring(3,regexp.length-5)</span>');
             }
 	}
 	if (items.slurs) {
@@ -209,7 +213,7 @@ function handleText(node)
             }
 	}   
         node.textContent = v;
-    });
+    });}
 }
 
 function timeSince(_time) {
