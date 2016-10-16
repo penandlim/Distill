@@ -1,3 +1,4 @@
+//Gerald testing if i can push
 function predictNSFW() {
     var images = document.getElementsByTagName("img");
     var images_to_remove = [];
