@@ -1,6 +1,6 @@
     @font-face {
         font-family: 'OCR';
-        src: url(OCRAStd.otf);
+        src: url(OCRAStd.otf); 
     }
 
     .blur img {
@@ -19,17 +19,17 @@
               box-sizing: border-box;
     }
 
-
+   
     .pic {
-      border: 10px solid #fff;
+      border: 10px solid #fff;  
       float: left;
-      height: 90vh;
-      width: 90vw;
-      margin: 20vw;
+      height: 300px;
+      width: 300px;
+      margin: 20px;
       overflow: hidden;
 
       -webkit-box-shadow: 5px 5px 5px #111;
-              box-shadow: 5px 5px 5px #111;
+              box-shadow: 5px 5px 5px #111;  
     }
 
     * {
@@ -39,39 +39,48 @@
               box-sizing: border-box;
     }
 
-      -webkit-box-shadow: 5px 5px 5px #111;
-              box-shadow: 5px 5px 5px #111;
-    }
+  
+ 
+    .pic {
+      border: 10px solid #fff;  
+      float: left;
+      height: 300px;
+      width: 300px;
+      margin: 20px;
+      overflow: hidden;
 
+      -webkit-box-shadow: 5px 5px 5px #111;
+              box-shadow: 5px 5px 5px #111;  
+    }
+    
     body {
-        height:100vh;
-        background-image:url('DistillBG.png');
+        
+        background-image:url('DistillBG.png'); 
         background-size: 100vw 100vh;
         overflow:hidden;
         color: #232323;
         font-family: 'OCR', serif;
         font-size: 5px;
-          height:100vh;
-
+        
     }
-
-
-
+    
+   
+    
     .mid {
         position:relative;
-        left:40vh;
+        left:26%;
     }
-
-
+   
+    
     .push-down{
         position:fixed;
-        width:100vw;
-        left:55vw;
+        width:100%;
+        left:55;
         bottom:10vh;
         font-size:7px;
     }
-
-
+    
+    
     .save-btn{
         position:absolute;
         text-align:center;
@@ -80,17 +89,17 @@
     }
     .center {
         text-align:center;
-        position:relative;
+        position:relative; 
         top:7vh;
-
+        
     }
-
+    
     .under-center{
         text-align:center;
         position:relative;
         top:10vh;
     }
-
+    
     .password-text {
         color:white;
         font-size:10px;
