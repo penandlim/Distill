@@ -21,7 +21,7 @@ function blurUnscannedImages() {
                 if (unscanned_images.length < 60 && !unscanned_images.includes(images[i])) {
                     unscanned_images.push(images[i]);
                 } else if (unscanned_images.length > 59) {
-                    var new_array = unscanned_images.slice();
+                    var new_array = unscanned_images.slice(0);
                     searchCategories(new_array);
                     unscanned_images = [];
                 }
@@ -31,96 +31,42 @@ function blurUnscannedImages() {
 }
 
 function searchCategories(arr) {
-    chrome.storage.sync.get({"nsfw" : true, "custom_list" : ["Shark", "Spider"]}, function (obj) {
+    chrome.storage.sync.get({"nsfw" : true, "bans" : ""}, function (obj) {
+        var images_to_remove_queue = arr.slice(0);
+        prepareImgURLs(images_to_remove_queue);
+
         if (obj.nsfw) {
-            setTimeout(predictNSFW.bind(null, arr), howManySearches * 100);
+            censorNSFW = true;
+            predictNSFW(images_to_remove_queue);
+            // setTimeout(predictNSFW.bind(null, arr), howManySearches * 100);
             howManySearches++;
+        } else {
+            censorNSFW = false;
         }
-//        if (obj.custom_list.length > 0) {
-//            setTimeout(searchCustomList.bind(null, arr, obj.custom_list), howManySearches * 300);
-//            howManySearches++;
-//        }
+
+        custom_list = obj.bans.split(" ");
+        if (custom_list.length > 0) {
+            censorCustom = true;
+            searchCustomList(images_to_remove_queue, custom_list);
+            // setTimeout(searchCustomList.bind(null, arr, custom_list), howManySearches * 100);
+            howManySearches++;
+        } else {
+            censorCustom = false;
+        }
     });
 }
-//
-//function searchCustomList(images_to_remove, custom_list) {
-//    // Prepare an array with URLs to pass to Clarifai.
-//    var image_urls = [];
-//
-//    // Go through images_to_remove and remove src.
-//    for (var i = 0; i < images_to_remove.length; i++) {
-//        var isImageValid = false;
-//        var url;
-//        // Check if there is anchor to it.
-//        var parentAnchor = images_to_remove[i].closest("a");
-//        url = images_to_remove[i].src;
-//        if (parentAnchor != null && parentAnchor.getAttribute("href") != null) {
-//            url = parentAnchor.getAttribute("href");
-//            var filetype = url.split(".");
-//            filetype = filetype[filetype.length - 1];
-//            if (filetype.substring(0,3) == "jpg" || filetype.substring(0,4) == "jpeg" || filetype.substring(0,3) == "png") {
-//                console.log("Using Real Image...");
-//            } else {
-//                url = images_to_remove[i].src;
-//            }
-//        }
-//
-//        if (url.substring(0, 2) == "//") {
-//            url = "http:" + url;
-//        }
-//
-//        image_urls.push(url);
-//    }
-//
-//    // Send image_urls and check for custom_list status.
-//    app.models.predict(Clarifai.GENERAL_MODEL, image_urls).then(
-//        function(response) {
-//            console.log(response);
-//            howManySearches--;
-//            var outputs = response.data.outputs;
-//
-//            for (var i = 0; i < outputs.length; i++) {
-//
-//                // Check for null. Needs this or else code stops on error.
-//                var percent = 0;
-//                for (var j = 0; j < outputs[i].data.concepts.length; j++) {
-//                    for (var k = 0; k < custom_list.length; k++) {
-//                        if (outputs[i].data.concepts[j].name === custom_list[k].toLowerCase()) {
-//                            if (percent < outputs[i].data.concepts[j].value)
-//                                percent = outputs[i].data.concepts[j].value;
-//                        }
-//                    }
-//                }
-//
-//                // if its detected content, leave image blurred.
-//                if (percent > 0.75) {
-//                    images_to_remove[i].setAttribute("_SafeSpace_Blurthis", true);
-//                } else {
-//                    if (!images_to_remove[i].hasAttribute("_SafeSpace_Blurthis"))
-//                        images_to_remove[i].setAttribute("_SafeSpace_noBlurthis", true);
-//                }
-//                images_to_remove[i].setAttribute("_SafeSpace_scanned", true);
-//            }
-//        },
-//        function(err) {
-//            console.log(err);
-//        }
-//    );
-//}
 
-function predictNSFW(images_to_remove) {
-    walk(document.body);
-
+function prepareImgURLs(arrrr) {
     // Prepare an array with URLs to pass to Clarifai.
-    var image_urls = [];
+    _image_urls = [];
 
     // Go through images_to_remove and remove src.
-    for (var i = 0; i < images_to_remove.length; i++) {
+    for (var i = 0; i < arrrr.length; i++) {
         var isImageValid = false;
         var url;
         // Check if there is anchor to it.
-        var parentAnchor = images_to_remove[i].closest("a");
-        url = images_to_remove[i].src;
+        var parentAnchor = arrrr[i].closest("a");
+        url = arrrr[i].src;
         if (parentAnchor != null && parentAnchor.getAttribute("href") != null) {
             url = parentAnchor.getAttribute("href");
             var filetype = url.split(".");
@@ -128,18 +74,68 @@ function predictNSFW(images_to_remove) {
             if (filetype.substring(0,3) == "jpg" || filetype.substring(0,4) == "jpeg" || filetype.substring(0,3) == "png") {
                 //console.log("Using Real Image...");
             } else {
-                url = images_to_remove[i].src;
+                url = arrrr[i].src;
             }
         }
 
         if (url.substring(0, 2) == "//") {
             url = "http:" + url;
         }
-        image_urls.push(url);
+        _image_urls.push(url);
     }
+}
+
+
+function searchCustomList(itr, custom_list) {
+
+    // Send image_urls and check for custom_list status.
+    app.models.predict(Clarifai.GENERAL_MODEL, _image_urls).then(
+        function(response) {
+            howManySearches--;
+            var outputs = response.data.outputs;
+
+            for (var i = 0; i < outputs.length; i++) {
+
+                // Check for null. Needs this or else code stops on error.
+                var percent = 0;
+                for (var j = 0; j < outputs[i].data.concepts.length; j++) {
+                    for (var k = 0; k < custom_list.length; k++) {
+                        if (outputs[i].data.concepts[j].name === custom_list[k].toLowerCase()) {
+                            if (percent < outputs[i].data.concepts[j].value)
+                                percent = outputs[i].data.concepts[j].value;
+                        }
+                    }
+                }
+
+                // if its detected content, leave image blurred.
+                if (percent > 0.75) {
+                    itr[i].setAttribute("_blur_custom", true);
+                    console.log("Censored by custom list!");
+                } else {
+                    itr[i].setAttribute("_no_blur_custom", true);
+                    console.log("Passed custom list!");
+                    if (censorNSFW) {
+                        if (itr[i].hasAttribute("_no_blur_nsfw")) {
+                            itr[i].style.cssText = "";
+                            console.log("Passed custom & blur list!");
+                        }
+                    } else {
+                        itr[i].style.cssText = "";
+                    }
+                }
+            }
+        },
+        function(err) {
+            console.log(err);
+        }
+    );
+}
+
+
+function predictNSFW(itr2) {
 
     // Send image_urls and check for NSFW status.
-    app.models.predict(Clarifai.NSFW_MODEL, image_urls).then(
+    app.models.predict(Clarifai.NSFW_MODEL, _image_urls).then(
         function(response) {
             console.log(response);
             howManySearches--;
@@ -156,11 +152,21 @@ function predictNSFW(images_to_remove) {
                 }
                 nsfwpercent = outputs[i].data.concepts[nsfwindex].value;
 
-                // if its NSFW content, leave image blurred.
-                if (nsfwpercent < 0.75) {
-                    images_to_remove[i].style.cssText = "";
+                if (nsfwpercent > 0.75) {
+                    itr2[i].setAttribute("_blur_nsfw", true);
+                    console.log("Censored by NSFW filter!");
+                } else {
+                    itr2[i].setAttribute("_no_blur_nsfw", true);
+                    console.log("Passed nsfw filter!");
+                    if (censorCustom) {
+                        if (itr2[i].hasAttribute("_no_blur_custom")) {
+                            itr2[i].style.cssText = "";
+                            console.log("Passed nsfw & custom list!");
+                        }
+                    } else {
+                        itr2[i].style.cssText = "";
+                    }
                 }
-                images_to_remove[i].setAttribute("_SafeSpace_scanned", true);
             }
         },
         function(err) {
@@ -216,8 +222,12 @@ function handleText(node)
 var app = new Clarifai.App("RurVN490s-Ff8HWyCT4CbY1htejSJR9RYOPop-aR","skxEFbPFDkVKQdvJVumHwVnUgiVoList5_SYV3jB");
 
 var unscanned_images = [];
+var _image_urls = [];
 
 var howManySearches = 0;
+
+var censorNSFW = false;
+var censorCustom = false;
 
 function scanAfterIdle() {
     if (unscanned_images.length > 0) {
@@ -227,9 +237,13 @@ function scanAfterIdle() {
     }
 }
 
-setInterval(scanAfterIdle, 200);
+setInterval(scanAfterIdle, 500);
 
 document.addEventListener("DOMNodeInserted", function() {
     blurUnscannedImages();
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    walk(document.body);
 });
 
