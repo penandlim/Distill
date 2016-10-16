@@ -113,7 +113,7 @@ function scanAfterIdle() {
 
 function walk(node) 
 {
-        var child, next;
+    var child, next;
 	
     if (!node.tagName || node.tagName.toLowerCase() === 'input'
 	     || node.tagName.toLowerCase() === 'textarea'
@@ -131,6 +131,7 @@ function walk(node)
 	child = next;
     }
 }
+
 //node.innerText
 function handleText(node) 
 {
@@ -138,24 +139,26 @@ function handleText(node)
     var regexp;
     console.log(node.textContent);
     if (chrome.storage.sync.get("swears", function(items){return items.swears;})) {
-	for (var i; i < swears.length; i++) {
-	    v = node.textContent;
-	    regexp = new RegExp("/\b" + swears[i] + "\b/g");
-	    if (v.search(regexp) >= 0) {
-		console.log("Naughty language: " + swears[i]);
-	    }
-	    v = v.replace(regexp, "XXXXXX");
-	    node.textContent = v;
-	}
+        for (var i; i < swears.length; i++) {
+            v = node.textContent;
+            regexp = new RegExp("/\b" + swears[i] + "\b/g");
+            if (v.search(regexp) >= 0) {
+            console.log("Naughty language: " + swears[i]);
+            }
+            v = v.replace(regexp, "XXXXXX");
+            node.textContent = v;
+        }
     }
     if (chrome.storage.sync.get("slurs", function(items){return items.slurs;})) {
-	for (var i; i < slurs.length; i++) {
-	    v = node.textContent;
-	    regexp = new RegExp("/\b" + slurs[i] + "\b/g");
-	    v = v.replace(regexp, "YYYYYY");
-	    node.textContent = v;
-	}
+        for (var i; i < slurs.length; i++) {
+            v = node.textContent;
+            regexp = new RegExp("/\b" + slurs[i] + "\b/g");
+            v = v.replace(regexp, "YYYYYY");
+            node.textContent = v;
+        }
     }
+}
+
 function timeSince(_time) {
     return new Date().getTime() - _time;
 }
