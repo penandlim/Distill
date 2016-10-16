@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Replace each image with a random one.
     for (var i = 0; i < images.length; i++) {
-        var image = images[i];
+      var image = images[i];
       image.src = getRandomImage();
       console.log(image);
     }
