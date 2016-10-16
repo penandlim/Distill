@@ -2,6 +2,7 @@ function save_options() {
   var gore = document.getElementById('gore').checked;
   var bugs = document.getElementById('bugs').checked;
   var swears = document.getElementById('swears').checked;
+  var slurs = document.getElementById('slurs').checked;
   var nsfw = document.getElementById('nsfw').checked;
   var selfharm = document.getElementById('self-harm').checked;
   var drugs = document.getElementById('drugs').checked;
@@ -12,6 +13,7 @@ function save_options() {
     "gore": gore,
     "bugs": bugs,
     "swears": swears,
+    "slurs": slurs,
     "nsfw": nsfw,
     "selfharm": selfharm,
     "drugs": drugs,
@@ -36,6 +38,7 @@ function restore_options() {
     "gore": false,
     "bugs": false,
     "swears": false,
+    "slurs": false,
     "nsfw": false,
     "selfharm": false,
     "drugs": false,
@@ -46,6 +49,7 @@ function restore_options() {
     document.getElementById('gore').checked = items.gore;
     document.getElementById('bugs').checked = items.bugs;
     document.getElementById('swears').checked = items.swears;
+    document.getElementById('slurs').checked = items.slurs;
     document.getElementById('nsfw').checked = items.nsfw;
     document.getElementById('self-harm').checked = items.selfharm;
     document.getElementById('drugs').checked = items.drugs;
