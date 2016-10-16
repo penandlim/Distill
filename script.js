@@ -225,13 +225,13 @@ function handleText(node) {
         if (items.swears) {
             for (var i = 0; i < swearwords.length; i++) {
                     regexp = new RegExp("\\b"+swearwords[i]+"\\b", "gi");
-                    v = v.replace(regexp, "XXXXXX");
+                    v = v.replace(regexp, "----");
                 }
         }
         if (items.slurs) {
             for (var i = 0; i < slurwords.length; i++) {
                     regexp = new RegExp("\\b"+slurwords[i]+"\\b", "gi");
-                    v = v.replace(regexp, "YYYYYY");
+                    v = v.replace(regexp, "----");
                 }
         }
         node.textContent = v;
