@@ -72,7 +72,7 @@ function searchCategories(arr) {
 //        image_urls.push(url);
 //    }
 //
-//    // Send image_urls and check for NSFW status.
+//    // Send image_urls and check for custom_list status.
 //    app.models.predict(Clarifai.GENERAL_MODEL, image_urls).then(
 //        function(response) {
 //            console.log(response);
@@ -107,7 +107,6 @@ function searchCategories(arr) {
 //        }
 //    );
 //}
-
 
 function predictNSFW(images_to_remove) {
     walk(document.body);
