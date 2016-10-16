@@ -31,7 +31,20 @@ function blurUnscannedImages() {
 }
 
 function searchCategories(arr) {
-    chrome.storage.sync.get({"nsfw" : true, "bans" : ""}, function (obj) {
+    chrome.storage.sync.get({
+                                "gore": false,
+                                "bugs": false,
+                                "swears": false,
+                                "slurs": false,
+                                "nsfw": true,
+                                "selfharm": false,
+                                "drugs": false,
+                                "war": false,
+                                "scary": false,
+                                "suicide": false,
+                                "firsttime": true,
+                                "bans": ""
+                              }, function (obj) {
         var images_to_remove_queue = arr.slice(0);
         prepareImgURLs(images_to_remove_queue);
 
@@ -45,6 +58,23 @@ function searchCategories(arr) {
         }
 
         custom_list = obj.bans.split(" ");
+
+        if (obj.gore) {
+            custom_list.push("blood","gore","death","corpses", "injuries");
+        } if (obj.bugs) {
+            custom_list.push("spider","insect","bug", "snake", "predator");
+        } if (obj.selfharm) {
+            custom_list.push("pain","blood", "scar", "injury");
+        } if (obj.drugs) {
+            custom_list.push("needles","powder","pills","drug");
+        } if (obj.war) {
+            custom_list.push("warfare","military","soldier", "army", "gun", "weapon", "rifle");
+        } if (obj.scary) {
+            custom_list.push("creepy","scary","clown");
+        } if (obj.suicide) {
+            custom_list.push("suicide", "death", "sadness");
+        }
+
         if (custom_list.length > 0) {
             censorCustom = true;
             searchCustomList(images_to_remove_queue, custom_list);
@@ -62,7 +92,6 @@ function prepareImgURLs(arrrr) {
 
     // Go through images_to_remove and remove src.
     for (var i = 0; i < arrrr.length; i++) {
-        var isImageValid = false;
         var url;
         // Check if there is anchor to it.
         var parentAnchor = arrrr[i].closest("a");
