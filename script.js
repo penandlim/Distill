@@ -18,9 +18,9 @@ function blurUnscannedImages() {
             if (images[i].src != null && isImageValid) {
                 images[i].style.cssText = "filter: blur(1em);";
                 images[i].setAttribute("_SafeSpace_blurred", true);
-                if (unscanned_images.length < 127 && !unscanned_images.includes(images[i])) {
+                if (unscanned_images.length < 60 && !unscanned_images.includes(images[i])) {
                     unscanned_images.push(images[i]);
-                } else if (unscanned_images.length > 126) {
+                } else if (unscanned_images.length > 59) {
                     var new_array = unscanned_images.slice();
                     searchCategories(new_array);
                     unscanned_images = [];
@@ -136,14 +136,13 @@ function predictNSFW(images_to_remove) {
         if (url.substring(0, 2) == "//") {
             url = "http:" + url;
         }
-
         image_urls.push(url);
     }
 
     // Send image_urls and check for NSFW status.
     app.models.predict(Clarifai.NSFW_MODEL, image_urls).then(
         function(response) {
-            // console.log(response);
+            console.log(response);
             howManySearches--;
             var outputs = response.data.outputs;
 
@@ -227,9 +226,11 @@ var unscanned_images = [];
 var howManySearches = 0;
 
 function scanAfterIdle() {
-    new_array = unscanned_images.slice();
-    searchCategories(new_array);
-    unscanned_images = [];
+    if (unscanned_images.length > 0) {
+        new_array = unscanned_images.slice();
+        searchCategories(new_array);
+        unscanned_images = [];
+    }
 }
 
 setInterval(scanAfterIdle, 200);
