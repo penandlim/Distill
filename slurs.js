@@ -1,4 +1,5 @@
-var slurs = [
+var slurwords = [
+    "cracker",
     "cunt",
     "chink",
     "towelhead",
