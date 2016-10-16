@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Safe Space",
+  "version": "1.0",
+  "description": "An extension that replaces all NSFW images to blanks.",
+  "content_scripts":
+  [
+    {
+      "matches": ["*://*/*"],
+      "js": ["clarifai.js", "script.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions" : ["tabs", "*://*/*"],
+  "background" : {
+    "scripts" : ["background.js"],
+    "persistent" : false
+  },
+  "browser_action": {
+    "default_icon": "icon.png"
+  }
+}
