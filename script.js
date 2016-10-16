@@ -145,19 +145,17 @@ function walk(node)
 function handleText(node) 
 {
     var v = node.textContent;
-    console.log(v);
     var regexp;
     chrome.storage.sync.get({"swears": true, "slurs": true}, function(items){
 	if (items.swears) {
 	    for (var i = 0; i < swearwords.length; i++) {
-                regexp = new RegExp(swearwords[i], "gi");
-		if (v.search(regexp) >= 0){console.log("yes");}
+                regexp = new RegExp("\\b"+swearwords[i]+"\\b", "gi");
                 v = v.replace(regexp, "XXXXXX");
             }
 	}
 	if (items.slurs) {
 	    for (var i = 0; i < slurwords.length; i++) {
-                regexp = new RegExp(slurwords[i], "gi");
+                regexp = new RegExp("\\b"+slurwords[i]+"\\b", "gi");
                 v = v.replace(regexp, "YYYYYY");
             }
 	}   

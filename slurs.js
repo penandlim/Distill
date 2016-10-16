@@ -1,4 +1,6 @@
 var slurwords = [
+    "rape",
+    "molest",
     "cracker",
     "cunt",
     "chink",
