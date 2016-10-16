@@ -1,0 +1,97 @@
+    @font-face {
+        font-family: 'OCR';
+        src: url(OCRAStd.otf);
+    }
+
+    .blur img {
+      -webkit-transition: all .25s ease;
+
+    }
+
+    .blur img:hover {
+      -webkit-filter: blur(5px);
+    }
+
+    * {
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+          -ms-box-sizing: border-box;
+              box-sizing: border-box;
+    }
+
+
+    .pic {
+      border: 10px solid #fff;
+      float: left;
+      height: 90vh;
+      width: 90vw;
+      margin: 20vw;
+      overflow: hidden;
+
+      -webkit-box-shadow: 5px 5px 5px #111;
+              box-shadow: 5px 5px 5px #111;
+    }
+
+    * {
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+          -ms-box-sizing: border-box;
+              box-sizing: border-box;
+    }
+
+      -webkit-box-shadow: 5px 5px 5px #111;
+              box-shadow: 5px 5px 5px #111;
+    }
+
+    body {
+        height:100vh;
+        background-image:url('DistillBG.png');
+        background-size: 100vw 100vh;
+        overflow:hidden;
+        color: #232323;
+        font-family: 'OCR', serif;
+        font-size: 5px;
+          height:100vh;
+
+    }
+
+
+
+    .mid {
+        position:relative;
+        left:40vh;
+    }
+
+
+    .push-down{
+        position:fixed;
+        width:100vw;
+        left:55vw;
+        bottom:10vh;
+        font-size:7px;
+    }
+
+
+    .save-btn{
+        position:absolute;
+        text-align:center;
+        bottom:2%;
+        left:30vw;
+    }
+    .center {
+        text-align:center;
+        position:relative;
+        top:7vh;
+
+    }
+
+    .under-center{
+        text-align:center;
+        position:relative;
+        top:10vh;
+    }
+
+    .password-text {
+        color:white;
+        font-size:10px;
+    }
