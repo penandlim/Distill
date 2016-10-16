@@ -86,13 +86,14 @@ function restore_options() {
     "bugs": false,
     "swears": false,
     "slurs": false,
-    "nsfw": false,
+    "nsfw": true,
     "selfharm": false,
     "drugs": false,
     "war": false,
     "scary": false,
     "suicide": false,
-    "firsttime": true
+    "firsttime": true,
+    "custom_list": ["Spider", "Shark"]
   }, function(items) {
     document.getElementById('gore').checked = items.gore;
     document.getElementById('bugs').checked = items.bugs;
