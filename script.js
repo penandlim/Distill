@@ -180,13 +180,13 @@ function walk(node)
 //    }
     //console.log(node.nodeType);
     child = node.firstChild;
-    if ( !child && node.textContent !== "") {
+    if (!child && node.textContent !== "" && node.nodeType === 3) {
         handleText(node);
     }
     while ( child ) {
-	next = child.nextSibling;
-	walk(child);
-	child = next;
+        next = child.nextSibling;
+        walk(child);
+        child = next;
     }
 }
 
@@ -196,28 +196,21 @@ function handleText(node)
     var v = node.textContent;
     var regexp;
     chrome.storage.sync.get({"swears": true, "slurs": true}, function(items){
-	if (items.swears) {
-	    for (var i = 0; i < swearwords.length; i++) {
-                regexp = new RegExp("\\b"+swearwords[i]+"\\b", "gi");
-		//if (v.search(regexp) >= 0) {
-		    
-		//}
-		//console.log(regexp);
-                v = v.replace(regexp, '<span style="color: red">regexp.substring(3,regexp.length-5)</span>');
-            }
-	}
-	if (items.slurs) {
-	    for (var i = 0; i < slurwords.length; i++) {
-                regexp = new RegExp("\\b"+slurwords[i]+"\\b", "gi");
-                v = v.replace(regexp, "YYYYYY");
-            }
-	}   
+        if (items.swears) {
+            for (var i = 0; i < swearwords.length; i++) {
+                    regexp = new RegExp("\\b"+swearwords[i]+"\\b", "gi");
+                    v = v.replace(regexp, "XXXXXX");
+                }
+        }
+        if (items.slurs) {
+            for (var i = 0; i < slurwords.length; i++) {
+                    regexp = new RegExp("\\b"+slurwords[i]+"\\b", "gi");
+                    v = v.replace(regexp, "YYYYYY");
+                }
+        }
         node.textContent = v;
-    });}
-}
-
-function timeSince(_time) {
-    return new Date().getTime() - _time;
+        // node.style.color = 'red';
+    });
 }
 
 var app = new Clarifai.App("RurVN490s-Ff8HWyCT4CbY1htejSJR9RYOPop-aR","skxEFbPFDkVKQdvJVumHwVnUgiVoList5_SYV3jB");
